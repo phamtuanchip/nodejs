@@ -1,17 +1,30 @@
+ 
+//window.Vue = require('vue');
+//require('vue-resource');
+//import vueresource from 'vue-resource'
 var socket = io();
+ 
 
-var vm = new Vue({
-  el: '#app-chat',
+new Vue({
+  el: "#app-chat",
   data: {
     pages: {},
     referrers: {},
-		activeUsers: 0
+    activeUsers: 0,
+    activeSessions: []
   },
-  created: function() {
-    socket.on('updated-stats', function(data) {
-			this.pages = data.pages;
-			this.referrers = data.referrers;
-			this.activeUsers = data.activeUsers;
-    }.bind(this));
+  created() {
+    
+    socket.on("updated-stats", data => {
+      this.pages = data.pages;
+      this.referrers = data.referrers;
+      this.activeUsers = data.activeUsers;
+    });
+  },
+  methods: {
+    searchAllSession() {
+     
+       
+    }
   }
 });

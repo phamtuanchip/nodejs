@@ -5,6 +5,22 @@ var http = require('http').Server(app);
 var io = require('socket.io')(http);
 var path = require('path');
 var config = require('./config.js');
+var request = require('request');
+
+mongoose = require('mongoose'),
+Task = require('./public/model/data.js'), //created model loading here
+bodyParser = require('body-parser');
+
+mongoose.Promise = global.Promise;
+mongoose.connect('mongodb://localhost/Tododb'); 
+
+
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
+
+
+var routes = require('./public/router/route.js'); //importing route
+routes(app); //register the route
 
 // the object that will hold information about the active users currently
 // on the site
@@ -30,6 +46,27 @@ app.get('/dashboard', function(req, res) {
 });
 app.get('/shoutboard', function(req, res) {
   res.sendFile(path.join(__dirname, 'views/shoutboard.html'));
+});
+
+app.get('/session', function(req, res) {
+  var r = {
+    RequestClass: "xBase",
+    RequestAction: "Request",
+    TotalRequests: "1",
+    //SessionId: sessionId,
+    R1_RequestFields: "Id; Description",
+    //R1_UserId: userId,
+    RequestTemplate: "GetSessionList"
+  };
+  request({
+      url: "http://josiahchoi.com/myjson",
+      method: "POST",
+      json: true,   // <--Very important!!!
+      body: r
+  }, function (error, response, body){
+      console.log(response);
+      res = response;
+  });
 });
 
 io.on('connection', function(socket) {
