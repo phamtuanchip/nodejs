@@ -28,6 +28,9 @@ app.get(/\/(about|contact)?$/, function(req, res) {
 app.get('/dashboard', function(req, res) {
   res.sendFile(path.join(__dirname, 'views/dashboard.html'));
 });
+app.get('/shoutboard', function(req, res) {
+  res.sendFile(path.join(__dirname, 'views/shoutboard.html'));
+});
 
 io.on('connection', function(socket) {
   if (socket.handshake.headers.host === config.host
